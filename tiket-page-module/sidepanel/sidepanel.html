@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page Module Inspector</title>
+    <link rel="stylesheet" href="sidepanel.css" />
+    <script type="module" src="sidepanel.js"></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <img class="brand-icon" src="../icons/icon-128.png" alt="" width="22" height="22" />
+      <div class="brand-text">
+        <h1>Page Module Inspector</h1>
+        <p id="tab-label" class="muted truncate">—</p>
+      </div>
+      <button id="toggle-fetch" class="btn btn-ghost" type="button" aria-expanded="false" aria-controls="fetch-panel">Fetch</button>
+      <button id="toggle-settings" class="btn btn-ghost" type="button" aria-expanded="false" aria-controls="settings-panel">Settings</button>
+    </header>
+
+    <section id="settings-panel" class="drawer" hidden>
+      <label class="field">
+        <span>Record URLs containing (comma-separated)</span>
+        <input id="patterns-input" type="text" spellcheck="false" placeholder="page-module" />
+      </label>
+      <label class="check">
+        <input id="include-cookies" type="checkbox" />
+        <span>Include cookies in copied cURL</span>
+      </label>
+      <p class="hint">Cookies and auth headers carry your session. Share cURLs that include them only in private channels.</p>
+      <div class="row-end">
+        <button id="save-settings" class="btn btn-primary" type="button">Save</button>
+      </div>
+    </section>
+
+    <section id="fetch-panel" class="drawer" hidden>
+      <label class="field">
+        <span>Fetch a URL from inside the current tab (uses the page's session)</span>
+        <input id="fetch-url" type="url" spellcheck="false" />
+      </label>
+      <label class="check">
+        <input id="fetch-reuse-headers" type="checkbox" checked />
+        <span>Reuse headers from the latest captured request</span>
+      </label>
+      <p class="hint">Useful when the page loaded its modules server-side (SSR) and the browser never made the call.</p>
+      <div class="row-end">
+        <button id="run-fetch" class="btn btn-primary" type="button">Fetch in this tab</button>
+      </div>
+    </section>
+
+    <main>
+      <section id="list-view" class="view">
+        <div class="toolbar">
+          <input id="filter-input" class="grow" type="search" placeholder="Filter by URL…" spellcheck="false" />
+          <select id="scope-select" aria-label="Which requests to show">
+            <option value="tab">This tab</option>
+            <option value="all">All tabs</option>
+          </select>
+          <button id="clear-btn" class="btn btn-ghost" type="button" title="Clear recorded requests">Clear</button>
+        </div>
+        <p id="count-label" class="count muted"></p>
+        <ul id="entries" class="entries"></ul>
+        <div id="empty" class="empty">
+          <p><strong>No page-module requests recorded yet.</strong></p>
+          <p class="muted">Open or reload a tiket.com page. Requests whose URL contains your patterns show up here as they happen.</p>
+          <p class="muted">Modules fetched server-side (SSR) never reach the browser — use <em>Fetch</em> to call the API from the page.</p>
+        </div>
+      </section>
+
+      <section id="detail-view" class="view" hidden>
+        <div class="detail-top">
+          <button id="back-btn" class="btn btn-ghost" type="button">← Back</button>
+          <div id="detail-badges" class="badges"></div>
+        </div>
+        <p id="detail-url" class="detail-url"></p>
+        <div class="actions">
+          <button id="copy-curl" class="btn btn-primary" type="button">Copy cURL</button>
+          <button id="copy-report" class="btn" type="button" title="Markdown with page URL, status, trace IDs and the cURL">Copy for backend</button>
+          <button id="copy-response" class="btn" type="button">Copy response</button>
+          <button id="download-response" class="btn" type="button">Download</button>
+          <button id="replay-btn" class="btn" type="button" title="Send this request again from the page">Replay</button>
+        </div>
+        <nav class="tabs" role="tablist">
+          <button class="tab" role="tab" data-tab="overview" type="button">Overview</button>
+          <button class="tab" role="tab" data-tab="response" type="button">Response</button>
+          <button class="tab" role="tab" data-tab="headers" type="button">Headers</button>
+          <button class="tab" role="tab" data-tab="curl" type="button">cURL</button>
+        </nav>
+        <div id="tab-overview" class="tab-panel" role="tabpanel"></div>
+        <div id="tab-response" class="tab-panel" role="tabpanel" hidden></div>
+        <div id="tab-headers" class="tab-panel" role="tabpanel" hidden></div>
+        <div id="tab-curl" class="tab-panel" role="tabpanel" hidden></div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>

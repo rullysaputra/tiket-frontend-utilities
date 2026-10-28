@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "tiket Page Module Inspector",
+  "short_name": "Page Module Inspector",
+  "version": "1.0.0",
+  "description": "Records page-module API calls on tiket.com, shows the response, and copies a ready-to-run cURL for the backend team.",
+  "minimum_chrome_version": "116",
+  "icons": {
+    "128": "icons/icon-128.png"
+  },
+  "permissions": ["storage", "unlimitedStorage", "sidePanel", "webRequest", "tabs", "scripting"],
+  "host_permissions": ["*://*.tiket.com/*", "http://localhost/*", "http://127.0.0.1/*"],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Open Page Module Inspector",
+    "default_icon": "icons/icon-128.png"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.tiket.com/*", "http://localhost/*", "http://127.0.0.1/*"],
+      "js": ["src/page-hook.js"],
+      "run_at": "document_start",
+      "world": "MAIN",
+      "all_frames": true
+    },
+    {
+      "matches": ["*://*.tiket.com/*", "http://localhost/*", "http://127.0.0.1/*"],
+      "js": ["src/bridge.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}

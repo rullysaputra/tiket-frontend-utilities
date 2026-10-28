@@ -1,0 +1,14 @@
+{
+  "name": "tiket-analytics",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chrome extension to read tiket analytics session data from the environment's storage origin.",
+  "scripts": {
+    "build:css": "tailwindcss -i src/input.css -o tailwind.css --minify",
+    "watch:css": "tailwindcss -i src/input.css -o tailwind.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "tailwindcss": "^4.0.0"
+  }
+}

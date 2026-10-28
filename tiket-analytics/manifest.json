@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Tiket Analytics Utilities",
+  "description": "Read the tiket analytics session data from the environment's storage origin.",
+  "version": "1.0",
+  "action": {
+    "default_popup": "main.html",
+    "default_icon": "logo.png"
+  },
+  "permissions": ["scripting"],
+  "host_permissions": ["https://*.tiket.com/*"]
+}
